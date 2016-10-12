@@ -15,7 +15,7 @@ RUN set -x && \
 	mkdir -p ${INSTALL_DIR} ${TEMP_DIR} && \
 	curl -Lk $MIRROR/zookeeper/zookeeper-$VERSION/zookeeper-$VERSION.tar.gz|tar xz -C /opt/zookeeper --strip-components=1 && \
 	cp /opt/zookeeper/conf/zoo_sample.cfg /opt/zookeeper/conf/zoo.cfg && \
-	rm -rf /var/cache/apk/* ${TEMP_DIR}
+	rm -rf /var/cache/apk/*
 
 EXPOSE 2181 2888 3888
 
@@ -23,5 +23,5 @@ WORKDIR ${INSTALL_DIR}
 
 VOLUME ["${INSTALL_DIR}/conf", "${TEMP_DIR}"]
 
-ENTRYPOINT ["${INSTALL_DIR}/bin/zkServer.sh"]
+ENTRYPOINT ["/opt/zookeeper/bin/zkServer.sh"]
 CMD ["start-foreground"]
