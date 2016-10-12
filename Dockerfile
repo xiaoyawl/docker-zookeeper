@@ -11,7 +11,7 @@ ENV INSTALL_DIR=/opt/zookeeper \
 
 RUN set -x && \
 	apk --update --no-cache upgrade && \
-	apk add --no-cache curl bash && \
+	apk add --no-cache curl bash tar && \
 	mkdir -p ${INSTALL_DIR} ${TEMP_DIR} && \
 	curl -Lk $MIRROR/zookeeper/zookeeper-$VERSION/zookeeper-$VERSION.tar.gz|tar xz -C /opt/zookeeper --strip-components=1 && \
 	cp /opt/zookeeper/conf/zoo_sample.cfg /opt/zookeeper/conf/zoo.cfg && \
