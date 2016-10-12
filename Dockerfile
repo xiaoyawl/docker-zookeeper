@@ -6,18 +6,20 @@ ARG VERSION=3.4.9
 
 LABEL name="zookeeper" version=$VERSION
 
-RUN apk add --no-cache wget bash \
-    && mkdir /opt \
-    && wget -q -O - $MIRROR/zookeeper/zookeeper-$VERSION/zookeeper-$VERSION.tar.gz | tar -xzf - -C /opt \
-    && mv /opt/zookeeper-$VERSION /opt/zookeeper \
-    && cp /opt/zookeeper/conf/zoo_sample.cfg /opt/zookeeper/conf/zoo.cfg \
-    && mkdir -p /tmp/zookeeper
+ENV INSTALL_DIR=/opt/zookeeper \
+	TEMP_DIR=/tmp/zookeeper
+
+RUN set -x && \
+	apk add --no-cache bash && \
+	mkdir -p ${INSTALL_DIR} ${TEMP_DIR} && \
+	curl -Lk $MIRROR/zookeeper/zookeeper-$VERSION/zookeeper-$VERSION.tar.gz|tar xz -C /opt/zookeeper --strip-components=1 && \
+	cp /opt/zookeeper/conf/zoo_sample.cfg /opt/zookeeper/conf/zoo.cfg && \
 
 EXPOSE 2181 2888 3888
 
-WORKDIR /opt/zookeeper
+WORKDIR ${INSTALL_DIR}
 
-VOLUME ["/opt/zookeeper/conf", "/tmp/zookeeper"]
+VOLUME ["${INSTALL_DIR}/conf", "${TEMP_DIR}"]
 
-ENTRYPOINT ["/opt/zookeeper/bin/zkServer.sh"]
+ENTRYPOINT ["${INSTALL_DIR}/bin/zkServer.sh"]
 CMD ["start-foreground"]
