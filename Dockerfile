@@ -10,10 +10,12 @@ ENV INSTALL_DIR=/opt/zookeeper \
 	TEMP_DIR=/tmp/zookeeper
 
 RUN set -x && \
-	apk add --no-cache bash && \
+	apk --update --no-cache upgrade && \
+	apk add --no-cache curl bash && \
 	mkdir -p ${INSTALL_DIR} ${TEMP_DIR} && \
 	curl -Lk $MIRROR/zookeeper/zookeeper-$VERSION/zookeeper-$VERSION.tar.gz|tar xz -C /opt/zookeeper --strip-components=1 && \
 	cp /opt/zookeeper/conf/zoo_sample.cfg /opt/zookeeper/conf/zoo.cfg && \
+	rm -rf /var/cache/apk/* ${TEMP_DIR}
 
 EXPOSE 2181 2888 3888
 
