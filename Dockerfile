@@ -16,6 +16,8 @@ RUN set -x && \
 	chmod +x /usr/bin/dumb-init && \
 	curl -Lk $MIRROR/zookeeper/zookeeper-$VERSION/zookeeper-$VERSION.tar.gz|tar xz -C /opt/zookeeper --strip-components=1 && \
 	#cp /opt/zookeeper/conf/zoo_sample.cfg /opt/zookeeper/conf/zoo.cfg && \
+	mkdir /etc/sysconfig/clock && \
+	echo -e 'ZONE="Asia/Shanghai"\nUTC=false\nARC=false' > /etc/sysconfig/clock && \
 	rm -rf /var/cache/apk/*
 
 COPY entrypoint.sh /
