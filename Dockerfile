@@ -11,7 +11,7 @@ ENV INSTALL_DIR=/opt/zookeeper \
 
 RUN set -x && \
 	apk --update --no-cache upgrade && apk add --no-cache curl bash tar iproute2 && \
-	mkdir -p ${INSTALL_DIR} ${TEMP_DIR} /etc/sysconfig/clock && \
+	mkdir -p ${INSTALL_DIR} ${TEMP_DIR} /etc/sysconfig && \
 	curl -Lk https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 -o /usr/bin/dumb-init && \
 	chmod +x /usr/bin/dumb-init && \
 	curl -Lk $MIRROR/zookeeper/zookeeper-$VERSION/zookeeper-$VERSION.tar.gz|tar xz -C /opt/zookeeper --strip-components=1 && \
